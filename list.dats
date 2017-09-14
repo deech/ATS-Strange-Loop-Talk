@@ -1,5 +1,5 @@
 
-fun {a:t0p} list_append2_vt {i,j:int} (xs: NSH(list(INV(a), i)), ys: list_vt(a, j)) :<!wrt> list_vt(a, i+j)
+extern fun {a:t0p} list_append2_vt {i,j:int} (xs: NSH(list(INV(a), i)), ys: list_vt(a, j)) :<!wrt> list_vt(a, i+j)
 
 implement
 {a}(*tmp*)
@@ -39,3 +39,5 @@ val () = loop(xs, ys, res)
 in
   res
 end // end of [list_append2_vt]
+
+implement main0 () = {}

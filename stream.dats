@@ -141,8 +141,6 @@ fun bar(): List0 double (* (g0float_t0ype (double_kind)) *) =
     val l3 = list_cons (5.0,l2)
   in l3 end
 
-val _ = list<double>(10)
-val _ = print_list<double>(bar())
 (* ****** ****** *)
 implement main0 () = {}
 (* ****** ****** *)

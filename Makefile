@@ -3,35 +3,24 @@ PATSHOMEQ="$(PATSHOME)"
 PATSCC=$(PATSHOMEQ)/bin/patscc
 PATSOPT=$(PATSHOMEQ)/bin/patsopt
 
-#PATSCCFLAGS=
-#PATSCCFLAGS=-O2
-#
-# '-flto' enables link-time optimization such as inlining lib functions
-#
-PATSCCFLAGS=-O2 -flto
-
 ######
 
+all: unsafe_swap swap_from_ats safe_swap stream list array_allocate factorial
+unsafe_swap: unsafe_swap.dats; \
+  $(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
+swap_from_ats: swap_from_ats.dats; \
+  $(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
+safe_swap: safe_swap.dats; \
+  $(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
 array_allocate: array_allocate.dats; \
-  $(PATSCC) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
+  $(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
 factorial: factorial.dats; \
-  $(PATSCC) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
+  $(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
 stream: stream.dats; \
-  $(PATSCC) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
+  $(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
 list: list.dats; \
-  $(PATSCC) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
+  $(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
 cleanall:: ; $(RMF) array_allocate factorial stream
-
-######
-
-#
-# You may find these rules useful
-#
-
-# %_sats.o: %.sats ; $(PATSCC) $(PATSCCFLAGS) -c $< || echo $@ ": ERROR!!!"
-# %_dats.o: %.dats ; $(PATSCC) $(PATSCCFLAGS) -c $< || echo $@ ": ERROR!!!"
-
-######
 
 RMF=rm -f
 
@@ -44,5 +33,9 @@ clean:: ; $(RMF) array_allocate
 clean:: ; $(RMF) factorial
 clean:: ; $(RMF) stream
 clean:: ; $(RMF) list
+clean:: ; $(RMF) safe_swap
+clean:: ; $(RMF) swap_from_ats
+clean:: ; $(RMF) swap
+clean:: ; $(RMF) unsafe_swap
 
 cleanall:: clean
