@@ -156,3 +156,495 @@ implement main0 () =
      () // free as in leak
   end
 #+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap (i:ptr, j:ptr, s:size_t) : void = "mac#swap"
+#+END_SRC
+
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap                          : void = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap                          :      = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+
+
+
+
+                            = "mac#swap"
+#+END_SRC
+
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+
+
+
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr |          }
+
+
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+
+
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (                  i : ptr l1                           ):
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (                  i : ptr l1, j : ptr l2               ):
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (                  i : ptr l1, j : ptr l2, s: sizeof_t a):
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (                | i : ptr l1, j : ptr l2, s: sizeof_t a):
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1          | i : ptr l1, j : ptr l2, s: sizeof_t a):
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1 , a @ l2 | i : ptr l1, j : ptr l2, s: sizeof_t a):
+                            = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1 , a @ l2 | i : ptr l1, j : ptr l2, s: sizeof_t a):
+    (                     ) = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1 , a @ l2 | i : ptr l1, j : ptr l2, s: sizeof_t a):
+    (                 void) = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1 , a @ l2 | i : ptr l1, j : ptr l2, s: sizeof_t a):
+    (               | void) = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1 , a @ l2 | i : ptr l1, j : ptr l2, s: sizeof_t a):
+    (a @ l1         | void) = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun swap
+  {a : t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1 , a @ l2 | i : ptr l1, j : ptr l2, s: sizeof_t a):
+    (a @ l1, a @ l2 | void) = "mac#swap"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc(s:size_t):ptr = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+
+
+
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+       {a:t@ype}
+
+
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+       {a:t@ype}
+       (s:sizeof_t a):
+
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+       {a:t@ype}
+       (s:sizeof_t a):
+                           (         ptr l)
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+       {a:t@ype}
+       (s:sizeof_t a):
+                           (a? @ l | ptr l)
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+       {a:t@ype}
+       (s:sizeof_t a):
+       [                 ] (a? @ l | ptr l)
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+       {a:t@ype}
+       (s:sizeof_t a):
+       [l:addr           ] (a? @ l | ptr l)
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+extern fun malloc
+       {a:t@ype}
+       (s:sizeof_t a):
+       [l:addr | l > null] (a? @ l | ptr l)
+   = "mac#malloc"
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (      i) = malloc (sizeof<int>)
+
+
+
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (    | i) = malloc (sizeof<int>)
+
+
+
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+
+
+
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+
+
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(      i, 1)
+
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val                 = swap(           i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val                 = swap(         | i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val                 = swap(pfi      | i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val                 = swap(pfi, pfj | i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val (           ()) = swap(pfi, pfj | i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val (         | ()) = swap(pfi, pfj | i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val (pfi1     | ()) = swap(pfi, pfj | i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val (pfi1,pfj1| ()) = swap(pfi, pfj | i, j, sizeof<int>)
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val (pfi1,pfj1| ()) = swap(pfi, pfj | i, j, sizeof<int>)
+in
+  free(pfi1 | i);
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val _ = ptr_set(pfi | i, 1)
+  val _ = ptr_set(pfj | j, 2)
+  val (pfi1,pfj1| ()) = swap(pfi, pfj | i, j, sizeof<int>)
+in
+  free(pfi1 | i);
+  free(pfj1 | j);
+end
+#+END_SRC
