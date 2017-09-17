@@ -648,3 +648,201 @@ in
   free(pfj1 | j);
 end
 #+END_SRC
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+      | 1 => acc
+      | i when i > 1 => loop(acc * i, i - 1)
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+
+
+  let
+    fun loop
+
+
+
+
+
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+
+  let
+    fun loop
+        { n : int | n >= 1 }
+
+
+
+
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+
+
+
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+
+
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+      | 1 => acc
+      |
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+      | 1 => acc
+      | i
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+      | 1 => acc
+      | i when i > 1
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+      | 1 => acc
+      | i when i > 1 => loop(acc * i, i - 1)
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+      | 1 => acc
+      | i when i > 1 => loop(acc * i, i - 1)
+          ^^^^^^^^^^
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+    { n : int | n >= 1 }
+    (i : int n) : double =
+  let
+    fun loop
+        { n : int | n >= 1 }
+        (acc : double, i : int (n)) : double =
+      case- i of
+      | 1 => acc
+      | i when i > 1 => loop(acc * i, i - 1)
+                                      ^^^^^
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
