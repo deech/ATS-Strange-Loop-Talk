@@ -2,7 +2,7 @@
 
 fun factorial { n : int | n >= 1 } (i : int n) : double =
   let
-    fun loop { n : int | n >= 1 } (acc : double, i : int (n)) : double =
+    fun loop { n : int | n >= 1 } .<n>. (acc : double, i : int (n)) : double =
       case- i of
       | 1 => acc
       | i when i > 1 => loop(acc * i, i - 1)
@@ -44,11 +44,12 @@ implement main0 () =
   let
     (* val odd : [n : even] int(n) = 2 *)
     val a = factorial(100)
-    val c = fact(100)
+    val c = fact(100000)
     (* val x = arrayptr $arrpsz(0,1,2,3,4) *)
     (* val b = fact(10) *)
     (* val p : int = aptr_getfree_elt<int>(b) *)
   in
+    println! "hello world";
     println! (sizeof<double>);
     println! a;
     println! c;
