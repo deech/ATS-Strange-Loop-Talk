@@ -6,7 +6,7 @@ fun factorial_array
     (i : int n):
      [l:addr][x:int|x == n - 1] (array_v(double?,l,x), mfree_gc_v(l) | ptr l) =
   let
-    var x = array_ptr_alloc<double>(i2sz(i - 1))
+    var x = array_ptr_alloc(i2sz(i - 1))
   in
     x
   end
