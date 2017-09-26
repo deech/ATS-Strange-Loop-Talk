@@ -6,7 +6,9 @@ PATSCCFLAGS = -g
 
 ######
 
-all: possible_bug unsafe_swap swap_from_ats safe_swap stream list array_allocate factorial factorial_array factorial_list
+all: possible_bug unsafe_swap swap_from_ats safe_swap stream list array_allocate factorial factorial_array factorial_list for_loop
+for_loop: for_loop.dats; \
+	$(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
 factorial_list: factorial_list.dats; \
 	$(PATSCC) $(PATSCCFLAGS) -D_GNU_SOURCE -DATS_MEMALLOC_LIBC -g -I${PATSHOME}/contrib -o $@ $< -latslib |& pats-filter
 factorial_array: factorial_array.dats; \
@@ -49,5 +51,6 @@ clean:: ; $(RMF) factorial_array
 clean:: ; $(RMF) factorial_array_extend
 clean:: ; $(RMF) factorial_array
 clean:: ; $(RMF) factorial_list
+clean:: ; $(RMF) for_loop
 
 cleanall:: clean

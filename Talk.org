@@ -5,6 +5,114 @@
 #+LATEX_listingsCLASS_OPTIONS: [presentation]
 #+BEAMER_THEME: Madrid
 #+EPRESENT_FRAME_LEVEL: 1
+* ATS
+- The elevator pitch
+- No runtime
+- Exactly the same performance predictability
+  - Decompiles to C
+  - No optimizations (except TCO)
+  - GCC does the rest
+- Exactly the same control of C
+  - Pointer arithmetic
+  - malloc/free
+  - stack allocation
+- Completely verified at compile time
+  - type system has zero overhead
+* ATS
+- Alioth benchmark screenshot (unfortunately taken down)
+#+ATTR_LATEX: :width 0.7\linewidth
+[[file:ats-screenshot.png]]
+* ATS
+- Is an ML (not standard)
+  - ADTS, pattern-matching, modules etc.
+  - Same power of abstraction
+- Linear logic to manage resources
+  - Prove it exists, consume proof, repeat
+  - file handles, sockets, anything
+- But especially memory
+  - Prove pointer is initialized, dereference, repeat
+  - Type checked pointer arithmetic
+* ATS
+- Refinement types
+  #+BEGIN_EXAMPLE
+  fun foo
+      {                       }
+      (i : int  ) ...
+  #+END_EXAMPLE
+- Theorem prover
+  - Inductive, only.
+- Optional GC
+  - Won't get in this much in this talk.
+* ATS
+- Refinement types
+  #+BEGIN_EXAMPLE
+  fun foo
+      {                       }
+      (i : int n) ...
+  #+END_EXAMPLE
+- Theorem prover
+  - Inductive, only.
+- Optional GC
+  - Won't get in this much in this talk.
+* ATS
+- Refinement types
+  #+BEGIN_EXAMPLE
+  fun foo
+      {n:int                  }
+      (i : int n) ...
+  #+END_EXAMPLE
+- Theorem prover
+  - Inductive, only.
+- Optional GC
+  - Won't get in this much in this talk.
+* ATS
+- Refinement types
+  #+BEGIN_EXAMPLE
+  fun foo
+      {n:int | n > 0          }
+      (i : int n) ...
+  #+END_EXAMPLE
+- Theorem prover
+  - Inductive, only.
+- Optional GC
+  - Won't get in this much in this talk.
+* ATS
+- Refinement types
+  #+BEGIN_EXAMPLE
+  fun foo
+      {n:int | n > 0 && n < 10}
+      (i : int n) ...
+  #+END_EXAMPLE
+- Theorem prover
+  - Inductive, only.
+- Optional GC
+  - Won't get in this much in this talk.
+* ATS
+- Refinement types
+  #+BEGIN_EXAMPLE
+  fun foo
+      {n:int | n > 0 && n < 10}
+      (i : int n) ...
+  #+END_EXAMPLE
+- Theorem prover
+  - Inductive, only.
+- Optional GC
+  - Won't get in this much in this talk.
+* ATS
+- An ML (not standard)
+- Linear logic
+- Refinement types
+- Theorem proving
+- Exactly the same control & performance profile of C
+* ATS
+- Linear logic to manage resources
+  - Prove it exists, consume proof, repeat
+  - file handles, sockets, anything
+- But especially memory
+  - Prove pointer is initialized, dereference, repeat
+  - Type checked pointer arithmetic
+
+* ATS
 * Hello world
 - Minimal
 #+BEGIN_EXAMPLE

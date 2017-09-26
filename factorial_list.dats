@@ -8,6 +8,7 @@ fun factorial
       var res : ptr
       fun loop
             {n1:int | n1 >= 0 && n1 <= n-2}
+            .<n1>.
             (
               seed: double,
               next: int n1,
