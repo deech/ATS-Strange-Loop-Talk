@@ -24,8 +24,8 @@
 [[file:ats-screenshot.png]]
 * ATS
 - Is an ML (not standard)
-  - ADTS, pattern-matching, modules etc.
-  - Same power of abstraction
+  - ADTS, pattern-matching etc.
+- Modules, but Modula-3!
 - Linear logic to manage resources
   - Prove it exists, consume proof, repeat
   - file handles, sockets, anything
@@ -39,10 +39,9 @@
       {                       }
       (i : int  ) ...
   #+END_EXAMPLE
-- Theorem prover
-  - Inductive, only.
 - Optional GC
   - Won't get in this much in this talk.
+  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -50,10 +49,9 @@
       {                       }
       (i : int n) ...
   #+END_EXAMPLE
-- Theorem prover
-  - Inductive, only.
 - Optional GC
   - Won't get in this much in this talk.
+  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -61,10 +59,9 @@
       {n:int                  }
       (i : int n) ...
   #+END_EXAMPLE
-- Theorem prover
-  - Inductive, only.
 - Optional GC
   - Won't get in this much in this talk.
+  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -72,10 +69,9 @@
       {n:int | n > 0          }
       (i : int n) ...
   #+END_EXAMPLE
-- Theorem prover
-  - Inductive, only.
 - Optional GC
   - Won't get in this much in this talk.
+  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -83,43 +79,23 @@
       {n:int | n > 0 && n < 10}
       (i : int n) ...
   #+END_EXAMPLE
-- Theorem prover
-  - Inductive, only.
 - Optional GC
   - Won't get in this much in this talk.
+  - Super handy
 * ATS
-- Refinement types
-  #+BEGIN_EXAMPLE
-  fun foo
-      {n:int | n > 0 && n < 10}
-      (i : int n) ...
-  #+END_EXAMPLE
-- Theorem prover
-  - Inductive, only.
-- Optional GC
-  - Won't get in this much in this talk.
-* ATS
-- An ML (not standard)
-- Linear logic
-- Refinement types
-- Theorem proving
-- Exactly the same control & performance profile of C
-* ATS
-- Linear logic to manage resources
-  - Prove it exists, consume proof, repeat
-  - file handles, sockets, anything
-- But especially memory
-  - Prove pointer is initialized, dereference, repeat
-  - Type checked pointer arithmetic
-
-* ATS
-* Hello world
-- Minimal
-#+BEGIN_EXAMPLE
-implement main0 () = println! "hello world!"
-#+END_EXAMPLE
+- Very Difficult
+- Intersects
+  - refinement types
+  - linear logic
+  - proofs
+  - C
+- Research!
+  - Funded by the NSF
+- No easy story, or newcomer "onboarding"
+- Tiny community
+- Sparse docs
 * Swap
-- A slightly non-standard swap
+- A slightly non-standard swap in C
 #+BEGIN_SRC
 void swap(void *i, void *j, size_t size) {
   void* tmp = malloc(size);
@@ -263,6 +239,10 @@ implement main0 () =
      () // free as in leak
   end
 #+END_SRC
+* Swap
+- Can totally mimic C
+- Including the bugs
+- Gradual migration
 * Swap
 - Safe swap
 #+BEGIN_SRC
@@ -579,7 +559,7 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val            = ptr_set(      i, 1)
+  val             = ptr_set(      i, 1)
 
 
 in
@@ -593,7 +573,7 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val            = ptr_set(pfi | i, 1)
+  val             = ptr_set(pfi | i, 1)
 
 
 in
@@ -607,8 +587,8 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
+  val (       ()) = ptr_set(pfi | i, 1)
+
 
 in
 
@@ -621,8 +601,36 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+
+in
+
+
+end
+#+END_SRC
+* Swap
+- Safe swap
+#+BEGIN_SRC
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
   val                 = swap(             i, j, sizeof<int>)
 in
 
@@ -635,8 +643,8 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
   val                 = swap(           | i, j, sizeof<int>)
 in
 
@@ -649,8 +657,8 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
   val                 = swap(pfi1       | i, j, sizeof<int>)
 in
 
@@ -663,8 +671,8 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
   val                 = swap(pfi1, pfj2 | i, j, sizeof<int>)
 in
 
@@ -677,8 +685,8 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
   val (           ()) = swap(pfi1, pfj2 | i, j, sizeof<int>)
 in
 
@@ -691,9 +699,9 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
-  val (pfi2      | _) = swap(pfi1, pfj1 | i, j, sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2     | ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
 
 
@@ -705,9 +713,9 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
-  val (pfi2,pfj2 | _) = swap(pfi1, pfj1 | i, j, sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
 
 
@@ -719,9 +727,9 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
-  val (pfi2,pfj2| _) = swap(pfi1, pfj2 | i, j, sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj2 | i, j, sizeof<int>)
 in
   free(pfi2 | i);
 
@@ -733,9 +741,9 @@ end
 implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
-  val (pfi1 | _) = ptr_set(pfi | i, 1)
-  val (pfj1 | _) = ptr_set(pfj | j, 2)
-  val (pfi2,pfj2| _) = swap(pfi1, pfj1 | i, j, sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
   free(pfi2 | i);
   free(pfj2 | j);
@@ -747,8 +755,8 @@ end
 implement main0 () = let
   val (pfi    ) = malloc
        ^^^
-  val (pfi1 | _) = ptr_set(pfi |     )
-       ^^^^                ^^^
+  val (pfi1 | ()) = ptr_set(pfi |     )
+       ^^^^                 ^^^
 
 in
 
@@ -761,10 +769,10 @@ end
 implement main0 () = let
 
 
-  val (pfi1 | _) =
+  val (pfi1 | ()) =
        ^^^^
-  val (pfi2,    | _) == swap(pfi1,      |                  )
-in     ^^^^                  ^^^^
+  val (pfi2,    | ()) == swap(pfi1,      |                  )
+in     ^^^^                   ^^^^
 
 
 end
@@ -777,11 +785,24 @@ implement main0 () = let
 
 
 
-  val (pfi2,    | _) =
+  val (pfi2,    | ()) =
 in     ^^^^
   free(pfi2 |  );
        ^^^^
 end
+#+END_EXAMPLE
+* Swap
+- Idiomatic swap
+#+BEGIN_EXAMPLE
+fun {a:t@ype}
+    swap{l1,l2:addr}
+    (..) : void =
+  let
+    val tmp = !p1
+  in
+    !p1 := !p2;
+    !p2 := tmp
+  end
 #+END_EXAMPLE
 * Factorial
 - Factorial
