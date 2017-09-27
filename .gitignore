@@ -19,3 +19,7 @@
 /unsafe_swap_dats.c
 /possible_bug
 /possible_bug_dats.c
+/*.c
+/factorial_array
+/factorial_list
+/for_loop
