@@ -11,6 +11,8 @@ fun factorial { n : int | n >= 1 } (i : int n) : double =
   end
 
 sortdef even = { i:int | i mod 2 == 0  }
+sortdef agz = {l:addr | l > null}
+viewtypedef ptrResource (a:t@ype) = [l:agz] (a @ l | ptr l)
 
 fn {a:t@ype}
    swap1 {l1,l2:addr}

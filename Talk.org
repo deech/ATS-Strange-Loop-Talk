@@ -1,14 +1,16 @@
-#+TITLE: A (Not So Gentle) Introduction To ATS
+#+TITLE: A (Not So Gentle) Introduction To Systems Programming In ATS
 #+AUTHOR: Aditya Siram
 #+OPTIONS: H:1 toc:f
+#+OPTIONS: ^:nil
 #+LATEX_CLASS: beamer
 #+LATEX_listingsCLASS_OPTIONS: [presentation]
 #+BEAMER_THEME: Madrid
 #+EPRESENT_FRAME_LEVEL: 1
 * ATS
-- The elevator pitch
-- No runtime
-- Exactly the same performance predictability
+- Is an ML (not standard)
+  - ADTS, pattern-matching etc.
+- FP fully supported (TCO)
+- Exactly the same performance/memory predictability
   - Decompiles to C
   - No optimizations (except TCO)
   - GCC does the rest
@@ -19,16 +21,29 @@
 - Completely verified at compile time
   - type system has zero overhead
 * ATS
-- Alioth benchmark screenshot (unfortunately taken down)
-#+ATTR_LATEX: :width 0.7\linewidth
-[[file:ats-screenshot.png]]
+- Top 4/5 on The Benchmarks Game
+- Now taken down
+  - No idea why!
 * ATS
-- Is an ML (not standard)
-  - ADTS, pattern-matching etc.
-- Modules, but Modula-3!
 - Linear logic to manage resources
   - Prove it exists, consume proof, repeat
   - file handles, sockets, anything
+* ATS
+#+BEGIN_EXAMPLE
+fun bar
+    ...
+    =
+   let
+      val (awesome_proof | fd) = open_file("some_file.txt")
+           ^^^^^^^^^^^^^
+      val contents = read_file (awesome_proof | fd)
+                                ^^^^^^^^^^^^^
+      ...
+   in
+      ...
+   end
+#+END_EXAMPLE
+* ATS
 - But especially memory
   - Prove pointer is initialized, dereference, repeat
   - Type checked pointer arithmetic
@@ -39,9 +54,6 @@
       {                       }
       (i : int  ) ...
   #+END_EXAMPLE
-- Optional GC
-  - Won't get in this much in this talk.
-  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -49,9 +61,6 @@
       {                       }
       (i : int n) ...
   #+END_EXAMPLE
-- Optional GC
-  - Won't get in this much in this talk.
-  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -59,9 +68,6 @@
       {n:int                  }
       (i : int n) ...
   #+END_EXAMPLE
-- Optional GC
-  - Won't get in this much in this talk.
-  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -69,9 +75,6 @@
       {n:int | n > 0          }
       (i : int n) ...
   #+END_EXAMPLE
-- Optional GC
-  - Won't get in this much in this talk.
-  - Super handy
 * ATS
 - Refinement types
   #+BEGIN_EXAMPLE
@@ -79,9 +82,6 @@
       {n:int | n > 0 && n < 10}
       (i : int n) ...
   #+END_EXAMPLE
-- Optional GC
-  - Won't get in this much in this talk.
-  - Super handy
 * ATS
 - Very Difficult
 - Intersects
@@ -95,58 +95,24 @@
 - Tiny community
 - Sparse docs
 * Swap
-- A slightly non-standard swap in C
+- Easiest way to get started is C interop
+- A generic swap in C
+ - Yes, I realize 'size_t' is bad!
 #+BEGIN_SRC
-void swap(void *i, void *j, size_t size) {
-  void* tmp = malloc(size);
-  memcpy(tmp, j, size);
-  memcpy(j, i, size);
-  memcpy(i, tmp, size);
-  free(tmp);
+void swap (void* p1, void* p2, size_t size) {
+	char* buffer = (char*)malloc(sizeof(char)*size);
+	memcpy(buffer, p1, size);
+	memcpy(p1, p2, size);
+	memcpy(p2, buffer, size);
+	free(buffer);
 }
 #+END_SRC
-
-* Swap
-- A slightly non-standard swap
-#+BEGIN_SRC
-void swap(void *i, void *j, size_t size) {
-  void* tmp = malloc(size);
-
-
-
-
-}
-#+END_SRC
-
-* Swap
-- A slightly non-standard swap
-#+BEGIN_SRC
-void swap(void *i, void *j, size_t size) {
-  void* tmp = malloc(size);
-  memcpy(tmp, j, size);
-  memcpy(j, i, size);
-  memcpy(i, tmp, size);
-
-}
-#+END_SRC
-
-* Swap
-- A slightly non-standard swap
-#+BEGIN_SRC
-void swap(void *i, void *j, size_t size) {
-  void* tmp = malloc(size);
-  memcpy(tmp, j, size);
-  memcpy(j, i, size);
-  memcpy(i, tmp, size);
-  free(tmp);
-}
-#+END_SRC
-
 * Swap
 - A slightly non-standard swap
 #+BEGIN_SRC
 %{
   #include <stdio.h>
+  #include <stdlib.h>
   void swap(void *i, void *j, size_t size) {
     ...
   }
@@ -159,11 +125,12 @@ void swap(void *i, void *j, size_t size) {
 #+BEGIN_SRC
 %{
   #include <stdio.h>
+  #include <stdlib.h>
   void swap(void *i, void *j, size_t size) {
     ...
   }
 %}
-extern fun swap (i:ptr, j:ptr, s:size_t) : void = "ext#swap"
+extern fun swap (i:ptr, j:ptr, s:size_t): void = "ext#swap"
 
 #+END_SRC
 
@@ -172,6 +139,7 @@ extern fun swap (i:ptr, j:ptr, s:size_t) : void = "ext#swap"
 #+BEGIN_SRC
 %{
   #include <stdio.h>
+  #include <stdlib.h>
   void swap(void *i, void *j, size_t size) {
     ...
   }
@@ -1089,185 +1057,200 @@ fun factorial
     loop(1.0, i)
   end
 #+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
+* Viewtype
+- Remember 'swap'?
 #+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons (a, l, n) of
-       (a @ l, array_v (a, l+sizeof a, n-1))
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+  {l2: addr | l2 > null}
+  (a @ l1 , a @ l2 | i : ptr l1, j : ptr l2, s: sizeof_t a):
+    (a @ l1, a @ l2 | void) = "ext#swap"
 
-
-
-) =
 
 
 
 #+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
+* Viewtype
+- Remember 'swap'?
 #+BEGIN_EXAMPLE
-dataview array_v
-(
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+
+  (a @ l1          | i : ptr l1                           ):
 
 
 
-) =
-    array_v_nil
+
+
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+
+  (a @ l1          | i : ptr l1                           ):
+
+sortdef ...
+
+viewtypedef ...
+
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+  ^^^^^^^^^^^^^^^^^^^^^^
+  (a @ l1          | i : ptr l1                           ):
+
+sortdef agz = {l:addr | l > null}
+              ^^^^^^^^^^^^^^^^^^
+viewtypedef ...
+
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+  ^^^^^^^^^^^^^^^^^^^^^^
+  (a @ l1          | i : ptr l1                           ):
+   ^^^^^^                ^^^^^^
+sortdef agz = {l:addr | l > null}
+              ^^^^^^^^^^^^^^^^^^
+viewtypedef safePtr(a:t@ype) = [l:agz] (a @ l | ptr l)
+                                        ^^^^^   ^^^^^
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+
+  (a @ l1          | i : ptr l1                           ):
+
+sortdef agz = {l:addr | l > null}
+        ^^^
+viewtypedef safePtr(a:t@ype) = [l:agz] (a @ l | ptr l)
+                               ^^^^^^^
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+
+  (a @ l1          | i : ptr l1                           ):
+
+
+
+
+
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+
+
+  (                  i : safePtr a                        ):
+
+
+
+
+
+#+END_EXAMPLE
+* Viewtypes
+- Viewtypes are the basic building block
+- Can create algebras of linear resources!
+* Algebraic datatypes
+- Build ADTs top of view types!
+#+BEGIN_EXAMPLE
+dataviewtype option_vt (a:viewt@ype, bool)
+  =  Some_vt(a, true) of a
+   | None_vt(a, false)
+#+END_EXAMPLE
+* Algebraic datatypes
+- Build ADTs top of view types!
+#+BEGIN_EXAMPLE
+dataviewtype option_vt (a:viewt@ype, bool)
+  =  Some_vt
+   | None_vt
+#+END_EXAMPLE
+* Algebraic datatypes
+- Build ADTs top of view types!
+#+BEGIN_EXAMPLE
+dataviewtype option_vt (a:viewt@ype, bool)
+  =  Some_vt(a, true) of a
+   | None_vt
+#+END_EXAMPLE
+* Algebraic datatypes
+- Build ADTs top of view types!
+#+BEGIN_EXAMPLE
+dataviewtype option_vt (a:viewt@ype, bool)
+  =  Some_vt(a, true) of a
+   | None_vt(a, false)
+#+END_EXAMPLE
+* Algebraic datatypes
+- Linear lists
+#+BEGIN_EXAMPLE
+dataviewtype list_vt
+  (a:viewt@ype, int) =
+  | list_vt_nil(a, 0) of ()
+  | {n:int | n > 0}
+    list_vt_cons(a, n) of (a, list_vt(a, n-1))
+#+END_EXAMPLE
+* Algebraic datatypes
+- Linear lists
+#+BEGIN_EXAMPLE
+dataviewtype list_vt
+  (a:viewt@ype, int) =
+  | list_vt_nil
   |
-
+    list_vt_cons
 #+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
+* Algebraic datatypes
+- Linear lists
 #+BEGIN_EXAMPLE
-dataview array_v
-(
-
-
-
-) =
-    array_v_nil
-  | array_v_cons
-
+dataviewtype list_vt
+  (a:viewt@ype, int) =
+  | list_vt_nil(a, 0) of ()
+  |
+    list_vt_cons
 #+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
+* Algebraic datatypes
+- Linear lists
 #+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-
-
-) =
-    array_v_nil
-  | array_v_cons
-
+dataviewtype list_vt
+  (a:viewt@ype, int) =
+  | list_vt_nil(a, 0) of ()
+  |
+    list_vt_cons(a, n)
 #+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
+* Algebraic datatypes
+- Linear lists
 #+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-
-) =
-    array_v_nil
-  | array_v_cons
-
+dataviewtype list_vt
+  (a:viewt@ype, int) =
+  | list_vt_nil(a, 0) of ()
+  |
+    list_vt_cons(a, n) of (a, list_vt(a, n-1))
 #+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
+* Algebraic datatypes
+- Linear lists
 #+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil
-  | array_v_cons
-
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons
-
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons (a, l, n)
-
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons (a, l, n) of
-       (a @ l,                             )
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons (a, l, n) of
-       (a @ l, array_v (                  ))
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons (a, l, n) of
-       (a @ l, array_v (a,                ))
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons (a, l, n) of
-       (a @ l, array_v (a, l+sizeof a,    ))
-#+END_EXAMPLE
-* Dataviewtype
-- ADT describing an array of pointers
-#+BEGIN_EXAMPLE
-dataview array_v
-(
-  a:t@ype,
-  l: addr,
-  n : int
-) =
-    array_v_nil  (a, l, 0)
-  | array_v_cons (a, l, n) of
-       (a @ l, array_v (a, l+sizeof a, n-1))
+dataviewtype list_vt
+  (a:viewt@ype, int) =
+  | list_vt_nil(a, 0) of ()
+  | {n:int | n > 0}
+    list_vt_cons(a, n) of (a, list_vt(a, n-1))
 #+END_EXAMPLE

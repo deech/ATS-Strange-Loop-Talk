@@ -6,14 +6,13 @@ staload UN = "prelude/SATS/unsafe.sats"
 %{
   #include <stdio.h>
   #include <stdlib.h>
-  #include <string.h>
 
-  void swap(void *i, void *j, size_t size) {
-    void* tmp = malloc(size);
-    memcpy(tmp, j, size);
-    memcpy(j, i, size);
-    memcpy(i, tmp, size);
-    free(tmp);
+  void swap (void* p1, void* p2, size_t size) {
+  	char* buffer = (char*)malloc(sizeof(char)*size);
+  	memcpy(buffer, p1, size);
+  	memcpy(p1, p2, size);
+  	memcpy(p2, buffer, size);
+  	free(buffer);
   }
 %}
 
