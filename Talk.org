@@ -21,8 +21,8 @@
 - Completely verified at compile time
   - type system has zero overhead
 * ATS
-- Top 4/5 on The Benchmarks Game
-- Now taken down
+- Top of The Benchmarks Game
+- Now taken down in 2015
   - No idea why!
 * ATS
 - Linear logic to manage resources
@@ -44,7 +44,7 @@ fun bar
    end
 #+END_EXAMPLE
 * ATS
-- But especially memory
+- Especially memory
   - Prove pointer is initialized, dereference, repeat
   - Type checked pointer arithmetic
 * ATS
@@ -721,50 +721,96 @@ end
 - Safe swap
 #+BEGIN_EXAMPLE
 implement main0 () = let
-  val (pfi    ) = malloc
-       ^^^
-  val (pfi1 | ()) = ptr_set(pfi |     )
-       ^^^^                 ^^^
-
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
-
-
+  free(pfi2 | i);
+  free(pfj2 | j);
+  ^^^^^^^^^^^^^^
 end
 #+END_EXAMPLE
 * Swap
 - Safe swap
 #+BEGIN_EXAMPLE
 implement main0 () = let
-
-
-  val (pfi1 | ()) =
-       ^^^^
-  val (pfi2,    | ()) == swap(pfi1,      |                  )
-in     ^^^^                   ^^^^
-
-
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
+in
+  free(pfi2 | i);
+  ^^^^^^^^^^^^^^
+  free(pfj2 | j);
 end
 #+END_EXAMPLE
 * Swap
 - Safe swap
 #+BEGIN_EXAMPLE
 implement main0 () = let
-
-
-
-
-  val (pfi2,    | ()) =
-in     ^^^^
-  free(pfi2 |  );
-       ^^^^
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
+in                                              ^^^^^^^^^^^
+  free(pfi2 | i);
+  free(pfj2 | j);
+end
+#+END_EXAMPLE
+* Swap
+- Safe swap
+#+BEGIN_EXAMPLE
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+                    ^^^^^^^^^^^^^^^^^^^
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
+in
+  free(pfi2 | i);
+  free(pfj2 | j);
+end
+#+END_EXAMPLE
+* Swap
+- Safe swap
+#+BEGIN_EXAMPLE
+implement main0 () = let
+  val (pfi | i) = malloc (sizeof<int>)
+  val (pfj | j) = malloc (sizeof<int>)
+  val (pfi1 | ()) = ptr_set(pfi | i, 1)
+  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
+in
+  free(pfi2 | i);
+  free(pfj2 | j);
+end
+#+END_EXAMPLE
+* Swap
+- Safe swap
+#+BEGIN_EXAMPLE
+implement main0 () = let
+      (pfi    ) =
+      (pfj    ) =
+      (pfi1     ) =        (pfi       )
+      (pfj1     ) =        (pfj       )
+      (pfi2,pfj2    ) =     (pfi1, pfj1                    )
+in
+      (pfi2    );
+      (pfj2    );
 end
 #+END_EXAMPLE
 * Swap
 - Idiomatic swap
 #+BEGIN_EXAMPLE
-fun {a:t@ype}
-    swap{l1,l2:addr}
-    (..) : void =
+fun {...}
+    swap
+    {...}
+    (...) : void =
   let
     val tmp = !p1
   in
@@ -772,6 +818,15 @@ fun {a:t@ype}
     !p2 := tmp
   end
 #+END_EXAMPLE
+* Step back
+- Step back.
+- Overwhelmed?
+  - I am!
+- Breathe ...
+* Factorial
+- Recursion
+  - First class support!
+- Allows typechecker to prove by induction!
 * Factorial
 - Factorial
 #+BEGIN_EXAMPLE
@@ -814,8 +869,46 @@ fun factorial
 - Factorial
 #+BEGIN_EXAMPLE
 fun factorial
-    { n : int | n >= 1 }
 
+    (i : int  ) :        =
+  let
+    fun loop
+
+
+
+
+
+
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+
+    (i : int  ) : double =
+  let
+    fun loop
+
+
+
+
+
+
+
+  in
+    loop(1.0, i)
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial
+#+BEGIN_EXAMPLE
+fun factorial
+
+    (i : int n) : double =
   let
     fun loop
 
@@ -1058,6 +1151,9 @@ fun factorial
   end
 #+END_EXAMPLE
 * Viewtype
+- Viewtype
+  - Connects ADTs, linear resources
+* Viewtype
 - Remember 'swap'?
 #+BEGIN_EXAMPLE
 extern fun swap
@@ -1124,7 +1220,7 @@ extern fun swap
    ^^^^^^                ^^^^^^
 sortdef agz = {l:addr | l > null}
               ^^^^^^^^^^^^^^^^^^
-viewtypedef safePtr(a:t@ype) = [l:agz] (a @ l | ptr l)
+viewtypedef safe_ptr(a:t@ype) = [l:agz] (a @ l | ptr l)
                                         ^^^^^   ^^^^^
 #+END_EXAMPLE
 * Viewtype
@@ -1138,7 +1234,7 @@ extern fun swap
 
 sortdef agz = {l:addr | l > null}
         ^^^
-viewtypedef safePtr(a:t@ype) = [l:agz] (a @ l | ptr l)
+viewtypedef safe_ptr(a:t@ype) = [l:agz] (a @ l | ptr l)
                                ^^^^^^^
 #+END_EXAMPLE
 * Viewtype
@@ -1162,7 +1258,7 @@ extern fun swap
   {a:t@ype}
 
 
-  (                  i : safePtr a                        ):
+  (                  i : safe_ptr a                        ):
 
 
 
@@ -1253,4 +1349,350 @@ dataviewtype list_vt
   | list_vt_nil(a, 0) of ()
   | {n:int | n > 0}
     list_vt_cons(a, n) of (a, list_vt(a, n-1))
+#+END_EXAMPLE
+* Factorial
+- A factorial that preserves intermediate results in a list
+#+BEGIN_EXAMPLE
+factorial(10)
+=> [(10 * 9), (10 * 9 * 8), (10 * 9 * 8 * 7) ...]
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n): list_vt(double, n-1) =
+  let
+      var res : ptr
+      fun loop
+          ...
+      val initial = g0i2f(i) * g0i2f(i-1)
+      val () = loop(initial,i-2,res)
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+
+
+  let
+      var res : ptr
+      fun loop
+          ...
+      val initial =  ...
+      val () = loop(initial,i-2,res)
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n):                      =
+  let
+      var res : ptr
+      fun loop
+          ...
+      val initial = ...
+      val () = loop(initial,i-2,res)
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n): list_vt(double, n-1) =
+  let
+      var res : ptr
+      fun loop
+          ...
+      val initial = ...
+      val () = loop(initial,i-2,res)
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n): list_vt(double, n-1) =
+  let
+      var res : ptr
+      fun loop
+          ...
+      val initial = g0i2f(i) * g0i2f(i-1)
+      val () = loop(initial,i-2,res)
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {n1:int | n1 >= 0 && n1 <= n-2}
+    .<n1>.
+    (
+      seed: double,
+      next: int n1,
+      res: &ptr? >> list_vt(double, n1+1)
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {                             }
+    .<  >.
+    (
+
+
+
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {                             }
+    .<  >.
+    (
+
+      next: int n1,
+
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {n1:int | n1 >= 0 && n1 <= n-2}
+    .<n1>.
+    (
+
+      next: int n1,
+
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {n1:int | n1 >= 0 && n1 <= n-2}
+                         ^^^^^^^^^
+
+...
+fun factorial {n:int | n >= 2} (i:int n)
+...
+val () = loop(initial,i-2,res)
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {n1:int | n1 >= 0 && n1 <= n-2}
+    .<n1>.
+    (
+
+      next: int n1,
+
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {n1:int | n1 >= 0 && n1 <= n-2}
+    .<n1>.
+    (
+      seed: double,
+      next: int n1,
+
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {n1:int | n1 >= 0 && n1 <= n-2}
+    .<n1>.
+    (
+      seed: double,
+      next: int n1,
+      res: &ptr?
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+    {n1:int | n1 >= 0 && n1 <= n-2}
+    .<n1>.
+    (
+      seed: double,
+      next: int n1,
+      res: &ptr? >> list_vt(double, n1+1)
+    ) : void = ...
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+
+
+                  = ...
+  case- next of
+    | 0 =>
+    | next when next > 0 =>
+      let
+
+
+
+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 =>
+    | next when next > 0 =>
+      let
+
+
+
+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 => res := list_vt_cons(seed, list_vt_nil())
+    | next when next > 0 =>
+      let
+
+
+
+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 => res := list_vt_cons(seed, list_vt_nil())
+    | next when next > 0 =>
+      let
+        val () = res := list_vt_cons{..}{n1+1}(seed, _)
+
+
+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 => res := list_vt_cons(seed, list_vt_nil())
+    | next when next > 0 =>
+      let
+        val () = res := list_vt_cons{..}{n1+1}(seed, _)
+                                                     |
+                         an uninitialized hole-------+
+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 => res := list_vt_cons(seed, list_vt_nil())
+    | next when next > 0 =>
+      let
+        val () = res := list_vt_cons{..}{n1+1}(seed, _)
+        val+list_vt_cons(_,hole) = res               |
+                            |                        |
+                            +-- uninitialized hole --+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 => res := list_vt_cons(seed, list_vt_nil())
+    | next when next > 0 =>
+      let
+        val () = res := list_vt_cons{..}{n1+1}(seed, _)
+        val+list_vt_cons(_,hole) = res
+        val curr = seed * g0i2f(next)
+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 => res := list_vt_cons(seed, list_vt_nil())
+    | next when next > 0 =>
+      let
+        val () = res := list_vt_cons{..}{n1+1}(seed, _)
+        val+list_vt_cons(_,hole) = res
+        val curr = seed * g0i2f(next)
+        val () = loop(curr, next-1, hole)
+                                     |
+      in             to be filled! --+
+      end
 #+END_EXAMPLE
