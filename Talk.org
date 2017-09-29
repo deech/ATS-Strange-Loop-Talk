@@ -1219,9 +1219,37 @@ extern fun swap
   (a @ l1          | i : ptr l1                           ):
    ^^^^^^                ^^^^^^
 sortdef agz = {l:addr | l > null}
-              ^^^^^^^^^^^^^^^^^^
+               ^^^^^^^^^^^^^^^^^^
+viewtypedef                             (a @ l | ptr l)
+                                         ^^^^^   ^^^^^
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+
+  (a @ l1          | i : ptr l1                           ):
+
+sortdef agz = {l:addr | l > null}
+        ^^^
+viewtypedef                     [l:agz] (a @ l | ptr l)
+                                ^^^^^^^
+#+END_EXAMPLE
+* Viewtype
+- Remember 'swap'?
+#+BEGIN_EXAMPLE
+extern fun swap
+  {a:t@ype}
+  {l1: addr | l1 > null}
+
+  (a @ l1          | i : ptr l1                           ):
+
+sortdef agz = {l:addr | l > null}
+
 viewtypedef safe_ptr(a:t@ype) = [l:agz] (a @ l | ptr l)
-                                        ^^^^^   ^^^^^
+
 #+END_EXAMPLE
 * Viewtype
 - Remember 'swap'?
@@ -1269,34 +1297,6 @@ extern fun swap
 - Viewtypes are the basic building block
 - Can create algebras of linear resources!
 * Algebraic datatypes
-- Build ADTs top of view types!
-#+BEGIN_EXAMPLE
-dataviewtype option_vt (a:viewt@ype, bool)
-  =  Some_vt(a, true) of a
-   | None_vt(a, false)
-#+END_EXAMPLE
-* Algebraic datatypes
-- Build ADTs top of view types!
-#+BEGIN_EXAMPLE
-dataviewtype option_vt (a:viewt@ype, bool)
-  =  Some_vt
-   | None_vt
-#+END_EXAMPLE
-* Algebraic datatypes
-- Build ADTs top of view types!
-#+BEGIN_EXAMPLE
-dataviewtype option_vt (a:viewt@ype, bool)
-  =  Some_vt(a, true) of a
-   | None_vt
-#+END_EXAMPLE
-* Algebraic datatypes
-- Build ADTs top of view types!
-#+BEGIN_EXAMPLE
-dataviewtype option_vt (a:viewt@ype, bool)
-  =  Some_vt(a, true) of a
-   | None_vt(a, false)
-#+END_EXAMPLE
-* Algebraic datatypes
 - Linear lists
 #+BEGIN_EXAMPLE
 dataviewtype list_vt
@@ -1304,6 +1304,24 @@ dataviewtype list_vt
   | list_vt_nil(a, 0) of ()
   | {n:int | n > 0}
     list_vt_cons(a, n) of (a, list_vt(a, n-1))
+#+END_EXAMPLE
+* Algebraic datatypes
+- Linear lists
+#+BEGIN_EXAMPLE
+dataviewtype list_vt
+  (                ) =
+  | list_vt_nil
+  |
+    list_vt_cons
+#+END_EXAMPLE
+* Algebraic datatypes
+- Linear lists
+#+BEGIN_EXAMPLE
+dataviewtype list_vt
+  (a:viewt@ype     ) =
+  | list_vt_nil
+  |
+    list_vt_cons
 #+END_EXAMPLE
 * Algebraic datatypes
 - Linear lists
@@ -1349,6 +1367,13 @@ dataviewtype list_vt
   | list_vt_nil(a, 0) of ()
   | {n:int | n > 0}
     list_vt_cons(a, n) of (a, list_vt(a, n-1))
+#+END_EXAMPLE
+* Algebraic datatypes
+- Linear lists
+#+BEGIN_EXAMPLE
+list_vt_cons(1,
+  list_vt_cons(2,
+    list_vt_nil())) : list_vt(int,2)
 #+END_EXAMPLE
 * Factorial
 - A factorial that preserves intermediate results in a list

@@ -45,6 +45,7 @@ end
 implement main0 () =
   let
     (* val odd : [n : even] int(n) = 2 *)
+    val x = list_vt_cons(1, list_vt_cons(2, list_vt_nil())) : list_vt(int,2)
     val a = factorial(100)
     val c = fact(100000)
     (* val x = arrayptr $arrpsz(0,1,2,3,4) *)
@@ -55,5 +56,6 @@ implement main0 () =
     println! (sizeof<double>);
     println! a;
     println! c;
+    free x;
     (* free x; *)
   end
