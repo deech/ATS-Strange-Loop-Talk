@@ -1407,6 +1407,102 @@ fun factorial
       var res : ptr
       fun loop
           ...
+
+
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+
+       (i:int  ):                      =
+  let
+      var res : ptr
+      fun loop
+          ...
+
+
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n):                      =
+  let
+      var res : ptr
+      fun loop
+          ...
+
+
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n): list_vt(double, n-1) =
+  let
+      var res : ptr
+      fun loop
+          ...
+
+
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n): list_vt(double, n-1) =
+  let
+      var res : ptr
+      fun loop
+          ...
+      val initial = g0i2f(i) * g0i2f(i-1)
+
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+       {n:int | n >= 2}
+       (i:int n): list_vt(double, n-1) =
+  let
+      var res : ptr
+      fun loop
+          ...
+      val initial = g0i2f(i) * g0i2f(i-1)
+      val () = loop(initial,i-2,res)
+  in
+      res
+  end
+#+END_EXAMPLE
+* Factorial
+- Factorial with intermediate results
+#+BEGIN_EXAMPLE
+fun factorial
+
+
+  let
+      var res : ptr
+      fun loop
+          ...
       val initial =  ...
       val () = loop(initial,i-2,res)
   in
@@ -1627,6 +1723,28 @@ fun loop ( seed: double,
       end
 #+END_EXAMPLE
 * Factorial
+- Solve this puzzle in a strict FP language!
+- Fold over a list and copy it!
+- As efficiently as a while/for loop with initial null
+- That's it!
+* Factorial
+- But!
+  - No reversing at the end! (1-pass only)
+  - No macros!
+  - No continuations!
+  - No peep holing!
+  - No weird optimization pragmas
+* Factorial
+- MLTon reverses
+- OCaml peep holes
+- Rust (uses macros or peep holes)
+* Factorial
+- Until recently these were elegant!
+- Now just dissatisfied!
+- ATS supports "tail allocation"
+  - A principled, safe way of passing
+    along a "hole"
+* Factorial
 - Inner loop
 #+BEGIN_EXAMPLE
 fun loop ( seed: double,
@@ -1653,8 +1771,27 @@ fun loop ( seed: double,
            res: &ptr? >> list_vt(double, n1+1)
          ) : void = ...
   case- next of
-    | 0 => res := list_vt_cons(seed, list_vt_nil())
-    | next when next > 0 =>
+    | 0 =>
+    |                    =>
+      let
+        val () = res := list_vt_cons{..}{n1+1}(seed, _)
+
+
+
+
+      in
+      end
+#+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 =>
+    |                    =>
       let
         val () = res := list_vt_cons{..}{n1+1}(seed, _)
                                                      |
@@ -1672,8 +1809,8 @@ fun loop ( seed: double,
            res: &ptr? >> list_vt(double, n1+1)
          ) : void = ...
   case- next of
-    | 0 => res := list_vt_cons(seed, list_vt_nil())
-    | next when next > 0 =>
+    | 0 =>
+    |                    =>
       let
         val () = res := list_vt_cons{..}{n1+1}(seed, _)
         val+list_vt_cons(_,hole) = res               |
@@ -1691,8 +1828,8 @@ fun loop ( seed: double,
            res: &ptr? >> list_vt(double, n1+1)
          ) : void = ...
   case- next of
-    | 0 => res := list_vt_cons(seed, list_vt_nil())
-    | next when next > 0 =>
+    | 0 =>
+    |                    =>
       let
         val () = res := list_vt_cons{..}{n1+1}(seed, _)
         val+list_vt_cons(_,hole) = res
@@ -1710,8 +1847,8 @@ fun loop ( seed: double,
            res: &ptr? >> list_vt(double, n1+1)
          ) : void = ...
   case- next of
-    | 0 => res := list_vt_cons(seed, list_vt_nil())
-    | next when next > 0 =>
+    | 0 =>
+    |                    =>
       let
         val () = res := list_vt_cons{..}{n1+1}(seed, _)
         val+list_vt_cons(_,hole) = res
@@ -1740,3 +1877,43 @@ fun loop
       in                             +---------------+
       end
 #+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop ( seed: double,
+           next: int n1,
+           res: &ptr? >> list_vt(double, n1+1)
+         ) : void = ...
+  case- next of
+    | 0 => res := list_vt_cons(seed, list_vt_nil())
+    |
+
+
+
+
+
+
+      in
+      end
+#+END_EXAMPLE
+* Sum up
+- ATS is rough
+  - but contains glimpses of the sys. programming future!
+- Linear logic
+  - Great idea!
+  - Need 1st class access
+- Refinement types
+  - Great idea!
+  - Other languages are coming around to it
+* Sum up
+- Smart typechecker/dumb compiler
+  - Amazing idea!
+  - ATS is a frontend to C
+- Haven't even talked about
+  - ATS has a whole proof level language
+  - Pattern matching and all!
+* The end
+- Repo for this talk
+  - https://github.com/deech/ATS-Strange-Loop-Talk
+- Will add more links to resources.
+- Thanks!
