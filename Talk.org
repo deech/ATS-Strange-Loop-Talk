@@ -1696,3 +1696,22 @@ fun loop ( seed: double,
       in             to be filled! --+
       end
 #+END_EXAMPLE
+* Factorial
+- Inner loop
+#+BEGIN_EXAMPLE
+fun loop
+
+
+                  = ...
+  case- next of
+    |
+    | next        +----------------------------------+
+      let         |                                  |
+                 res := list_vt_cons          (    , _)
+                  |                                  |
+                  +------------------+               |
+                 loop(            , hole)            |
+                                     |               |
+      in                             +---------------+
+      end
+#+END_EXAMPLE
