@@ -710,7 +710,7 @@ implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
   val (pfi1 | ()) = ptr_set(pfi | i, 1)
-  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfj2 | ()) = ptr_set(pfj | j, 2)
   val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
   free(pfi2 | i);
@@ -724,7 +724,7 @@ implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
   val (pfi1 | ()) = ptr_set(pfi | i, 1)
-  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfj2 | ()) = ptr_set(pfj | j, 2)
   val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
   free(pfi2 | i);
@@ -739,7 +739,7 @@ implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
   val (pfi1 | ()) = ptr_set(pfi | i, 1)
-  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfj2 | ()) = ptr_set(pfj | j, 2)
   val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
   free(pfi2 | i);
@@ -754,7 +754,7 @@ implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
   val (pfi1 | ()) = ptr_set(pfi | i, 1)
-  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfj2 | ()) = ptr_set(pfj | j, 2)
   val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in                                              ^^^^^^^^^^^
   free(pfi2 | i);
@@ -769,7 +769,7 @@ implement main0 () = let
   val (pfj | j) = malloc (sizeof<int>)
   val (pfi1 | ()) = ptr_set(pfi | i, 1)
                     ^^^^^^^^^^^^^^^^^^^
-  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfj2 | ()) = ptr_set(pfj | j, 2)
   val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
   free(pfi2 | i);
@@ -783,7 +783,7 @@ implement main0 () = let
   val (pfi | i) = malloc (sizeof<int>)
   val (pfj | j) = malloc (sizeof<int>)
   val (pfi1 | ()) = ptr_set(pfi | i, 1)
-  val (pfj1 | ()) = ptr_set(pfj | j, 2)
+  val (pfj2 | ()) = ptr_set(pfj | j, 2)
   val (pfi2,pfj2| ()) = swap(pfi1, pfj1 | i, j, sizeof<int>)
 in
   free(pfi2 | i);
@@ -797,7 +797,7 @@ implement main0 () = let
       (pfi    ) =
       (pfj    ) =
       (pfi1     ) =        (pfi       )
-      (pfj1     ) =        (pfj       )
+      (pfj2     ) =        (pfj       )
       (pfi2,pfj2    ) =     (pfi1, pfj1                    )
 in
       (pfi2    );
@@ -1875,25 +1875,6 @@ fun loop
                  loop(            , hole)            |
                                      |               |
       in                             +---------------+
-      end
-#+END_EXAMPLE
-* Factorial
-- Inner loop
-#+BEGIN_EXAMPLE
-fun loop ( seed: double,
-           next: int n1,
-           res: &ptr? >> list_vt(double, n1+1)
-         ) : void = ...
-  case- next of
-    | 0 => res := list_vt_cons(seed, list_vt_nil())
-    |
-
-
-
-
-
-
-      in
       end
 #+END_EXAMPLE
 * Sum up
