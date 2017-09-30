@@ -7,4 +7,4 @@ implement main0 () =
     val (_, _ | p) = malloc_gc (sizeof<int>)
   in
     ()
-  end
+  end 

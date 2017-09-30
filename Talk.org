@@ -1896,5 +1896,14 @@ fun loop
 * The end
 - Repo for this talk
   - https://github.com/deech/ATS-Strange-Loop-Talk
-- Will add more links to resources.
+- Chris Double's blog
+  - It's amazing (read everything!)
+  - https://bluishcoder.co.nz/tags/ats/index.html
+- The ATS website
+  - http://www.ats-lang.org/
+- The canonical book
+  - http://ats-lang.sourceforge.net/DOCUMENT/INT2PROGINATS/HTML/book1.html
+- Google group
+  - Very helpful!
+  - https://groups.google.com/forum/#!forum/ats-lang-users
 - Thanks!
