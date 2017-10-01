@@ -1,0 +1,10 @@
+* A (Not So Gentle) Introduction To Systems Programming In ATS
+Included in this repo are these are the code examples to support my [[https://www.youtube.com/watch?v=zt0oqb1dbko][ATS talk]] at [[https://www.thestrangeloop.com/][Strange Loop 2017]] and the slides: ~Talk.org~ and ~Talk.pdf~.
+
+In order to build the examples you'll need to install ATS using the instructions on the [[http://www.ats-lang.org/Downloads.html][ATS' main website]]. Once you've done that simply running ~make~ should compile all the executables.
+
+I admit the example code is a mess and there's a few files that literally don't do anything except compile. It's unlikely I'll clean it up unless you open an issue for some particular example.
+
+Also feel free to use issues to ask questions about how something works.
+
+Enjoy!
